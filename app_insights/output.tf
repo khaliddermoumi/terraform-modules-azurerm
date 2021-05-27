@@ -8,7 +8,7 @@ output instrumentation_key {
 }
 
 output name {
-  value = local.resource_name
+  value = data.azurerm_application_insights.self.name
 }
 
 output resource_group_name {
