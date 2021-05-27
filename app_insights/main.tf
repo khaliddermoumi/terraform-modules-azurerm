@@ -101,19 +101,8 @@ resource null_resource app_insights_resource {
 
 # the motivation of this data reference is to be able to return (output) some important values, such as the
 # instrumentation key.
-# BTW: doing this outside of the module (with a data reference following the module) may result in timing errors.
 data azurerm_application_insights self {
-  # the reason to reference the attribute "null_resource.app_insights_resource.id" here is to specify that this
-  # data lookup shall only occur after the "null_resource.app_insights_resource" resource, and only whenever it
-  # is actually run.
-  # in Terraform you could also just specify "depends_on = [null_resource.app_insights_resource]", but the problem
-  # is that this statement always runs on every "terraform apply", also causing dependent resources (those that
-  # read the output) to be updated every time. because this is unacceptable, it is better to reference the
-  # "null_resource.app_insights_resource" resource in a different way. here, the id of the resource is used, but
-  # by using the replace() function, the string that is passed is actually completely empty. thus, the statement
-  # is effectively just: name = var.name
-  # to get rid of these sorts of workarounds, TF should support the creation of workspace-based app insights
-  # resources - see: https://github.com/terraform-providers/terraform-provider-azurerm/issues/7667
-  name                = format("%s%s", var.name, replace(null_resource.app_insights_resource.id, "/.*/", ""))
+  name = var.name
   resource_group_name = var.resource_group_name
+  depends_on = [null_resource.app_insights_resource]
 }
