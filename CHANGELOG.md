@@ -1,7 +1,7 @@
 
 # Changelog Terraform Azure RM Modules Project
 
-## v0.2.0 (unreleased)
+## v0.2.0
 
 * removed app_insights module
     * azurerm provider supports workspace model from version 2.71.0
